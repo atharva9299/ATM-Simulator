@@ -1,0 +1,56 @@
+
+class ATM:
+    def _init_(self, balance=0):
+        self.balance = balance
+        self.account_info = {}
+
+    def create_account(self, account_number, pin):
+        self.account_info[account_number] = {'pin': pin, 'balance': 0}
+
+    def validate_account(self, account_number, pin):
+        if account_number in self.account_info and self.account_info[account_number]['pin'] == pin:
+            return True
+        else:
+            return False
+
+    def check_balance(self, account_number):
+        return self.account_info[account_number]['balance']
+
+    def deposit(self, account_number, amount):
+        self.account_info[account_number]['balance'] += amount
+        self.balance += amount
+        return f"Deposited {amount} successfully. New balance: {self.check_balance(account_number)}"
+
+    def withdraw(self, account_number, amount):
+        if amount <= self.check_balance(account_number):
+            self.account_info[account_number]['balance'] -= amount
+            self.balance -= amount
+            return f"Withdrawn {amount} successfully. New balance: {self.check_balance(account_number)}"
+        else:
+            return "Insufficient funds."
+
+# Example usage:
+atm = ATM()
+
+# Create an account
+atm.create_account("123456789", "1234")
+
+# Validate account
+account_number = "123456789"
+pin = "1234"
+if atm.validate_account(account_number, pin):
+    print(f"Account {account_number} validated successfully.")
+else:
+    print("Invalid account or PIN.")
+
+# Check balance
+balance = atm.check_balance(account_number)
+print(f"Current balance: {balance}")
+
+# Deposit
+deposit_amount = 100
+print(atm.deposit(account_number, deposit_amount))
+
+# Withdraw
+withdraw_amount = 50
+print(atm.withdraw(account_number, withdraw_amount))
